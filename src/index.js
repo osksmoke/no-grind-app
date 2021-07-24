@@ -14,7 +14,7 @@ client.on('message', async msg => {
 
     const text = msg.content.toLowerCase().split(' ')
     
-	if (text[0] === '!btc') {
+	if (text[0] === '!tbc') {
         
         if(text[1] && attrList[text[1]]){
             
