@@ -1,0 +1,20 @@
+{
+  "name": "nogrind.bot",
+  "version": "1.0.0",
+  "description": "this is a bot for replying to messages with the price of coins",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest --watchAll"
+  },
+  "author": "christian llovera",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.10",
+    "discord.js": "^12.5.3"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6"
+  }
+}
