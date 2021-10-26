@@ -18,7 +18,7 @@ const scraping = async url =>{
         }).get();
         
         const price = rows[0].price
-        const result = (price * 1000) * 0.76
+        const result = (price * 1000) * 0.82
         
         return result.toPrecision(4)
 
