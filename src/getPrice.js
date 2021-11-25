@@ -10,13 +10,13 @@ const scraping = async url =>{
         const pageContent = await axios.get(url);
         const $ = cheerio.load(pageContent.data);
     
-        const rows = $('div#pre_checkout_sls_offer > div > .other_offer-desk-main-box')
+        const rows = $('div#pre_checkout_sls_offer > div > .other-seller-offeer_mainbox > .other_offer-desk-main-box')
         .map((_, el) => {
             el = $(el);
             const price = el.find('.offer-price-amount').text();
             return {price};
         }).get();
-        
+
         const price = rows[0].price
         const result = (price * 1000) * 0.82
         
