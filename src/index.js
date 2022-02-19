@@ -254,5 +254,46 @@ client.on('message', async msg => {
 			
 		}
 	}
+	
+	if(typeof text[0] !== 'undefined' && text[0] === '!lostark')
+	{  
+		if(typeof text[1] !== 'undefined')  
+		{ 
+			let server_name;
+			server_name = text.join(' ');
+			server_name = server_name.replace('!lostark','').replace(' ','');
+			 
+			let set_info = {
+				name : 'lost_ark',
+				server : server_name.toLowerCase().trim()
+			};  
+		   
+			const botIcon = client.user.displayAvatarURL();
+            const price = await json_games(set_info); 
+            const capitalize = w =>  w[0].toUpperCase() + w.slice(1).toLowerCase();
+    
+            if(price.price != 'N/A'){
+                const msj_precio =  message_games({
+					type:'US', 
+					server:capitalize(server_name), 
+					price:price.price, 
+					avatar:botIcon, 
+					abreviatura:'LOST ARK', 
+					title:'Lost Ark', 
+					thumbnail: 'https://media.discordapp.net/attachments/932397428294959164/944723721170587699/lordark.jpg', 
+					amount:'1000'
+				});
+                msg.author.send(msj_precio);
+            }else{
+                const err =  message_games({
+					type:'Error', 
+					avatar:botIcon,
+					abreviatura:'LOSTARK'
+				});
+                msg.author.send(err);
+            }
+			
+		}
+	}
 
 });

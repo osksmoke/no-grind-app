@@ -58,6 +58,13 @@ const list_games = {
 		region:{
 			us: null 
 		}
+    },
+	lost_ark:{
+		service_id:'lgc_service_1',
+        id:'lgc_game_23027',
+		region:{
+			us:'dfced32f-2f0a-4df5-a218-1e068cfadffa' 
+		}
     }
 }	
 
@@ -110,6 +117,11 @@ const scraping = async function(url,name){
 		if(name == 'albion_online')
 		{
 			result = price * 0.72;
+		}  
+		
+		if(name == 'lost_ark')
+		{
+			result = (price * 0.75)*1000;
 		}  
         return result.toPrecision(4)
 
@@ -188,6 +200,12 @@ const get_json_games = async game => {
 					let url = 'https://www.g2g.com/offer/'+slug_url+'?service_id='+juego['service_id']+'&brand_id='+juego['id']+'&fa='+row['children'][0]['collection_id']+'%3A'+row['children'][0]['dataset_id']+'&sort=lowest_price&include_offline=1';
 					url_precio = url; 
 				} 
+				
+				if(!url_precio.length && game["name"] == 'lost_ark')
+				{  
+					let url = 'https://www.g2g.com/offer/'+slug_url+'?service_id='+juego['service_id']+'&brand_id='+juego['id']+'&region_id='+juego['region']['us']+'&sort=lowest_price&include_offline=1&fa='+row['children'][0]['collection_id']+'%3A'+row['children'][0]['dataset_id'];
+					url_precio = url; 
+				}
 			} 
 		}); 
 		
@@ -218,6 +236,12 @@ const get_json_games = async game => {
 		}
 		
 		if(game["name"] == 'albion_online')
+		{ 
+			const price = await scraping(url_precio,game["name"]);
+			return {price:price}
+		}
+		
+		if(game["name"] == 'lost_ark')
 		{ 
 			const price = await scraping(url_precio,game["name"]);
 			return {price:price}
