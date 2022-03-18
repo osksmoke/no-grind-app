@@ -24,6 +24,13 @@ function slug(str){
 
 // Service Id => lgc_service_1 es Game Coins
 const list_games = {
+	wow_tbc:{ 
+		service_id:'lgc_service_1', 
+        id:'lgc_game_29076',
+		region:{
+			us:'dfced32f-2f0a-4df5-a218-1e068cfadffa' 
+		}
+    },
     wow_som:{ 
 		service_id:'lgc_service_1', 
         id:'lgc_game_27816',
@@ -94,6 +101,11 @@ const scraping = async function(url,name){
         const price = rows[0].price;
 		let result;
 		 
+		if(name == 'wow_tbc')
+		{
+			result = (price * 0.842)*1000;
+		}  
+		
 		if(name == 'wow_som')
 		{
 			result = price * 0.78;
@@ -160,6 +172,23 @@ const get_json_games = async game => {
 			{      
 				let slug_url = slug(value);  
 				
+				if(game["name"] == 'wow_tbc')
+				{
+					let url = 'https://www.g2g.com/offer/'+slug_url+'?service_id='+juego['service_id']+'&brand_id='+juego['id']+'&region_id='+juego['region']['us']+'&sort=lowest_price&include_offline=1&fa='+row['children'][0]['collection_id']+'%3A'+row['children'][0]['dataset_id'];
+					let framer_value = value.split(' - ');
+					let faction = framer_value[1].split(' ');
+				
+					if(!url_aliance.length && faction == 'alliance')
+					{
+						url_aliance = url; 
+					}
+					
+					if(!url_horde.length && faction == 'horde')
+					{
+						url_horde = url;
+					} 
+				}
+				
 				if(game["name"] == 'wow_som')
 				{
 					let url = 'https://www.g2g.com/offer/'+slug_url+'?service_id='+juego['service_id']+'&brand_id='+juego['id']+'&region_id='+juego['region']['us']+'&sort=lowest_price&include_offline=1&fa='+row['children'][0]['collection_id']+'%3A'+row['children'][0]['dataset_id'];
@@ -208,6 +237,14 @@ const get_json_games = async game => {
 				}
 			} 
 		}); 
+		
+		if(game["name"] == 'wow_tbc')
+		{
+			const aliancePrice = await scraping(url_aliance,game["name"]);
+			const hordePrice = await scraping(url_horde,game["name"]);
+			
+			return {aliance:aliancePrice, horde:hordePrice}
+		}
 		
 		if(game["name"] == 'wow_som')
 		{

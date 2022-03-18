@@ -16,7 +16,7 @@ client.on('message', async msg => {
  
     const text = msg.content.toLowerCase().split(' ')
     
-	if (text[0] === '!tbc') {
+	/*if (text[0] === '!tbc') {
         if(text[1] && attrList[text[1]]){
             
             const botIcon = client.user.displayAvatarURL()
@@ -34,6 +34,58 @@ client.on('message', async msg => {
             }
 
         }
+	}*/
+	
+	if(typeof text[0] !== 'undefined' && text[0] === '!tbc')
+	{   
+		if(typeof text[1] !== 'undefined')  
+		{  
+			let server_name;
+			server_name = text.join(' ');
+			server_name = server_name.replace('!tbc','').replace(' ','');
+			 
+			let set_info = {
+				name : 'wow_tbc',
+				server : server_name.toLowerCase().trim()
+			};  
+		   
+			const botIcon = client.user.displayAvatarURL();
+            const price = await json_games(set_info); 
+            const capitalize = w =>  w[0].toUpperCase() + w.slice(1).toLowerCase();
+    
+            if(price.aliance != 'N/A' && price.horde != 'N/A'){
+                const aliance =  message_games({
+					type:'Aliance', 
+					server:capitalize(server_name), 
+					price:price.aliance, 
+					avatar:botIcon, 
+					abreviatura:'TBC', 
+					title:'WOW Classic Gold - Burning Crusade', 
+					thumbnail: 'https://media.discordapp.net/attachments/840629334725230642/848313004914638848/logo_na.png?width=80&height=64', 
+					amount:'1000 Oro'
+				});
+                const horde =  message_games({
+					type:'Horde', 
+					server:capitalize(server_name), 
+					price:price.horde, 
+					avatar:botIcon, 
+					abreviatura:'TBC', 
+					title:'WOW Classic Gold - Burning Crusade', 
+					thumbnail: 'https://media.discordapp.net/attachments/840629334725230642/848313004914638848/logo_na.png?width=80&height=64', 
+					amount:'1000 Oro'
+				});
+                msg.author.send(aliance);
+                msg.author.send(horde);
+            }else{
+                const err =  message_games({
+					type:'Error', 
+					avatar:botIcon,
+					abreviatura:'TBC'
+				});
+                msg.author.send(err);
+            }
+			
+		}
 	}
 	
 	if(typeof text[0] !== 'undefined' && text[0] === '!som')
