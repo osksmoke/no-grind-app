@@ -121,7 +121,7 @@ const scraping = async function(url,name){
 		
 		if(name == 'lost_ark')
 		{
-			result = (price * 0.75)*1000;
+			result = (price * 0.841)*1000;
 		}  
         return result.toPrecision(4)
 
